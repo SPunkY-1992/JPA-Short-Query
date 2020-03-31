@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -29,7 +31,7 @@ public interface Between {
         lower == null || upper == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.between(RawJoiner.<S, TJ1>join(root, join1).get(attribute), lower, upper))
+                .where(cb.between(join(root, join1).get(attribute), lower, upper))
                 .getRestriction();
   }
 
@@ -44,7 +46,7 @@ public interface Between {
         l == null || u == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.between(RawJoiner.<S, TJ2>join(root, join1, join2).get(attribute), l, u))
+                .where(cb.between(join(root, join1, join2).get(attribute), l, u))
                 .getRestriction();
   }
 
@@ -60,7 +62,7 @@ public interface Between {
         l == null || u == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.between(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(attribute), l, u))
+                .where(cb.between(join(root, j1, j2, j3).get(attribute), l, u))
                 .getRestriction();
   }
 
@@ -77,7 +79,7 @@ public interface Between {
         l == null || u == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.between(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a), l, u))
+                .where(cb.between(join(root, j1, j2, j3, j4).get(a), l, u))
                 .getRestriction();
   }
 

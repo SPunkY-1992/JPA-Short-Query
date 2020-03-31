@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -28,8 +30,8 @@ public interface GreaterThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ1>join(root, join1).get(attribute))
-                : cb.greaterThanOrEqualTo(RawJoiner.<S, TJ1>join(root, join1).get(attribute), value)
+                ? cb.isNull(join(root, join1).get(attribute))
+                : cb.greaterThanOrEqualTo(join(root, join1).get(attribute), value)
         )
         .getRestriction();
   }
@@ -45,8 +47,8 @@ public interface GreaterThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ2>join(root, j1, j2).get(a))
-                : cb.greaterThanOrEqualTo(RawJoiner.<S, TJ2>join(root, j1, j2).get(a), value)
+                ? cb.isNull(join(root, j1, j2).get(a))
+                : cb.greaterThanOrEqualTo(join(root, j1, j2).get(a), value)
         )
         .getRestriction();
   }
@@ -63,8 +65,8 @@ public interface GreaterThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a))
-                : cb.greaterThanOrEqualTo(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a), value)
+                ? cb.isNull(join(root, j1, j2, j3).get(a))
+                : cb.greaterThanOrEqualTo(join(root, j1, j2, j3).get(a), value)
         )
         .getRestriction();
   }
@@ -77,13 +79,14 @@ public interface GreaterThanOrEqualTo {
       TJ2, J2 extends Bindable<TJ2> & Attribute<TJ1, ?>,
       TJ3, J3 extends Bindable<TJ3> & Attribute<TJ2, ?>,
       TJ4, J4 extends Bindable<TJ4> & Attribute<TJ3, ?>, A extends Comparable<? super A>>
-  Specification<S> greaterThanOrEqualTo(J1 j1, J2 j2, J3 j3, J4 j4, SingularAttribute<TJ4, A> a, A v) {
+  Specification<S> greaterThanOrEqualTo(J1 j1, J2 j2, J3 j3, J4 j4, SingularAttribute<TJ4, A> a,
+      A v) {
     return (root, cq, cb) -> cq
         .distinct(true)
         .where(
             v == null
-                ? cb.isNull(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a))
-                : cb.greaterThanOrEqualTo(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a), v)
+                ? cb.isNull(join(root, j1, j2, j3, j4).get(a))
+                : cb.greaterThanOrEqualTo(join(root, j1, j2, j3, j4).get(a), v)
         )
         .getRestriction();
   }

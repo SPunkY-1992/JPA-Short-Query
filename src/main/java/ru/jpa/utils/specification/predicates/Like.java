@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -32,7 +34,7 @@ public interface Like {
             ? cb.disjunction()
             : cq.distinct(true)
                 .where(cb.like(
-                    cb.lower(RawJoiner.<S, TJ1>join(root, join1).get(a.getName()).as(String.class)),
+                    cb.lower(join(root, join1).get(a.getName()).as(String.class)),
                     "%" + value.toLowerCase() + "%"
                 ))
                 .getRestriction();
@@ -50,7 +52,7 @@ public interface Like {
             ? cb.disjunction()
             : cq.distinct(true)
                 .where(cb.like(
-                    cb.lower(RawJoiner.<S, TJ2>join(root, j1, j2).get(a.getName()).as(String.class)),
+                    cb.lower(join(root, j1, j2).get(a.getName()).as(String.class)),
                     "%" + value.toLowerCase() + "%"
                 ))
                 .getRestriction();
@@ -69,8 +71,7 @@ public interface Like {
             ? cb.disjunction()
             : cq.distinct(true)
                 .where(cb.like(
-                    cb.lower(
-                        RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a.getName()).as(String.class)),
+                    cb.lower(join(root, j1, j2, j3).get(a.getName()).as(String.class)),
                     "%" + value.toLowerCase() + "%"
                 ))
                 .getRestriction();
@@ -90,7 +91,7 @@ public interface Like {
             ? cb.disjunction()
             : cq.distinct(true)
                 .where(cb.like(
-                    cb.lower(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a.getName()).as(String.class)),
+                    cb.lower(join(root, j1, j2, j3, j4).get(a.getName()).as(String.class)),
                     "%" + value.toLowerCase() + "%"
                 ))
                 .getRestriction();

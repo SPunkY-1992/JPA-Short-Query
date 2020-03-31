@@ -1,8 +1,13 @@
-package ru.jpa.utils.specification.predicates;
+package ru.jpa.utils.specification.join;
 
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
-import javax.persistence.metamodel.*;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.CollectionAttribute;
+import javax.persistence.metamodel.ListAttribute;
+import javax.persistence.metamodel.MapAttribute;
+import javax.persistence.metamodel.SetAttribute;
+import javax.persistence.metamodel.SingularAttribute;
 
 interface RawJoiner {
 

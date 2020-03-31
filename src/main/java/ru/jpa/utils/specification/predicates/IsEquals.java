@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -30,8 +32,8 @@ public interface IsEquals {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull((RawJoiner.<S, TJ1>join(root, join1)).get(attribute))
-                : cb.equal(RawJoiner.<S, TJ1>join(root, join1).get(attribute), value)
+                ? cb.isNull((join(root, join1)).get(attribute))
+                : cb.equal(join(root, join1).get(attribute), value)
         )
         .getRestriction();
   }
@@ -47,8 +49,8 @@ public interface IsEquals {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ2>join(root, join1, join2).get(attribute))
-                : cb.equal(RawJoiner.<S, TJ2>join(root, join1, join2).get(attribute), value)
+                ? cb.isNull(join(root, join1, join2).get(attribute))
+                : cb.equal(join(root, join1, join2).get(attribute), value)
         )
         .getRestriction();
   }
@@ -65,8 +67,8 @@ public interface IsEquals {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(attribute))
-                : cb.equal(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(attribute), value)
+                ? cb.isNull(join(root, j1, j2, j3).get(attribute))
+                : cb.equal(join(root, j1, j2, j3).get(attribute), value)
         )
         .getRestriction();
   }
@@ -84,8 +86,8 @@ public interface IsEquals {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a))
-                : cb.equal(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a), value)
+                ? cb.isNull(join(root, j1, j2, j3, j4).get(a))
+                : cb.equal(join(root, j1, j2, j3, j4).get(a), value)
         )
         .getRestriction();
   }

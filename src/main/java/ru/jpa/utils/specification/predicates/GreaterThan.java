@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -28,7 +30,7 @@ public interface GreaterThan {
         value == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.greaterThan(RawJoiner.<S, TJ1>join(root, join1).get(attribute), value))
+                .where(cb.greaterThan(join(root, join1).get(attribute), value))
                 .getRestriction();
   }
 
@@ -43,7 +45,7 @@ public interface GreaterThan {
         value == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.greaterThan(RawJoiner.<S, TJ2>join(root, join1, join2).get(attribute), value))
+                .where(cb.greaterThan(join(root, join1, join2).get(attribute), value))
                 .getRestriction();
   }
 
@@ -59,7 +61,7 @@ public interface GreaterThan {
         value == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.greaterThan(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(attribute), value))
+                .where(cb.greaterThan(join(root, j1, j2, j3).get(attribute), value))
                 .getRestriction();
   }
 
@@ -76,7 +78,7 @@ public interface GreaterThan {
         value == null
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(cb.greaterThan(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a), value))
+                .where(cb.greaterThan(join(root, j1, j2, j3, j4).get(a), value))
                 .getRestriction();
   }
 

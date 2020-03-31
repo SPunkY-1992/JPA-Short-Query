@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -28,8 +30,8 @@ public interface LessThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ1>join(root, join1).get(attribute))
-                : cb.lessThanOrEqualTo(RawJoiner.<S, TJ1>join(root, join1).get(attribute), value)
+                ? cb.isNull(join(root, join1).get(attribute))
+                : cb.lessThanOrEqualTo(join(root, join1).get(attribute), value)
         )
         .getRestriction();
   }
@@ -45,8 +47,8 @@ public interface LessThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ2>join(root, j1, j2).get(attribute))
-                : cb.lessThanOrEqualTo(RawJoiner.<S, TJ2>join(root, j1, j2).get(attribute), value)
+                ? cb.isNull(join(root, j1, j2).get(attribute))
+                : cb.lessThanOrEqualTo(join(root, j1, j2).get(attribute), value)
         )
         .getRestriction();
   }
@@ -63,8 +65,8 @@ public interface LessThanOrEqualTo {
         .distinct(true)
         .where(
             value == null
-                ? cb.isNull(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a))
-                : cb.lessThanOrEqualTo(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a), value)
+                ? cb.isNull(join(root, j1, j2, j3).get(a))
+                : cb.lessThanOrEqualTo(join(root, j1, j2, j3).get(a), value)
         )
         .getRestriction();
   }
@@ -82,8 +84,8 @@ public interface LessThanOrEqualTo {
         .distinct(true)
         .where(
             v == null
-                ? cb.isNull(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a))
-                : cb.lessThanOrEqualTo(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a), v)
+                ? cb.isNull(join(root, j1, j2, j3, j4).get(a))
+                : cb.lessThanOrEqualTo(join(root, j1, j2, j3, j4).get(a), v)
         )
         .getRestriction();
   }

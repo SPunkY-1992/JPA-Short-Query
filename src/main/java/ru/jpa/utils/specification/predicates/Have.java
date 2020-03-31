@@ -1,5 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
+import static ru.jpa.utils.specification.join.Joiner.join;
+
 import java.util.Collection;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.Bindable;
@@ -24,7 +26,7 @@ public interface Have {
   Specification<S> have(J1 join1, PluralAttribute<TJ1, ? extends Collection<A>, A> attribute, A value) {
     return (root, cq, cb) -> cq
         .distinct(true)
-        .where(cb.isMember(value, RawJoiner.<S, TJ1>join(root, join1).get(attribute.getName())))
+        .where(cb.isMember(value, join(root, join1).get(attribute.getName())))
         .getRestriction();
   }
 
@@ -37,7 +39,7 @@ public interface Have {
   Specification<S> have(J1 j1, J2 j2, PluralAttribute<TJ2, ? extends Collection<A>, A> attribute, A value) {
     return (root, cq, cb) -> cq
         .distinct(true)
-        .where(cb.isMember(value, RawJoiner.<S, TJ2>join(root, j1, j2).get(attribute.getName())))
+        .where(cb.isMember(value, join(root, j1, j2).get(attribute.getName())))
         .getRestriction();
   }
 
@@ -51,7 +53,7 @@ public interface Have {
   Specification<S> have(J1 j1, J2 j2, J3 j3, PluralAttribute<TJ3, ? extends Collection<A>, A> a, A value) {
     return (root, cq, cb) -> cq
         .distinct(true)
-        .where(cb.isMember(value, RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a.getName())))
+        .where(cb.isMember(value, join(root, j1, j2, j3).get(a.getName())))
         .getRestriction();
   }
 
@@ -66,7 +68,7 @@ public interface Have {
   Specification<S> have(J1 j1, J2 j2, J3 j3, J4 j4, PluralAttribute<TJ4, ? extends Collection<A>, A> a, A v) {
     return (root, cq, cb) -> cq
         .distinct(true)
-        .where(cb.isMember(v, RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a.getName())))
+        .where(cb.isMember(v, join(root, j1, j2, j3, j4).get(a.getName())))
         .getRestriction();
   }
 

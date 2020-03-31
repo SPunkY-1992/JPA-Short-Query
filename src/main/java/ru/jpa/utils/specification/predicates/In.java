@@ -1,6 +1,7 @@
 package ru.jpa.utils.specification.predicates;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static ru.jpa.utils.specification.join.Joiner.join;
 
 import java.util.Collection;
 import javax.persistence.metamodel.Attribute;
@@ -31,7 +32,7 @@ public interface In {
         isEmpty(values)
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(RawJoiner.<S, TJ1>join(root, join1).get(attribute).in(values))
+                .where(join(root, join1).get(attribute).in(values))
                 .getRestriction();
   }
 
@@ -46,7 +47,7 @@ public interface In {
         isEmpty(values)
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(RawJoiner.<S, TJ2>join(root, j1, j2).get(attribute).in(values))
+                .where(join(root, j1, j2).get(attribute).in(values))
                 .getRestriction();
   }
 
@@ -62,7 +63,7 @@ public interface In {
         isEmpty(values)
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(RawJoiner.<S, TJ3>join(root, j1, j2, j3).get(a).in(values))
+                .where(join(root, j1, j2, j3).get(a).in(values))
                 .getRestriction();
   }
 
@@ -79,7 +80,7 @@ public interface In {
         isEmpty(v)
             ? cb.disjunction()
             : cq.distinct(true)
-                .where(RawJoiner.<S, TJ4>join(root, j1, j2, j3, j4).get(a).in(v))
+                .where(join(root, j1, j2, j3, j4).get(a).in(v))
                 .getRestriction();
   }
 
