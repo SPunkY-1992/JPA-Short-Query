@@ -1,4 +1,4 @@
-# jpa-utils
+# JPA Short Query
 
 ### when you have:
 
@@ -10,17 +10,20 @@
 
 ### then you can:
 
-    List<User> result = userRepository.findAll(PREDICATE.greaterThan(User_.number, bound));
+    // find users with number >= 2000
+    List<User> result = userRepository.findAll(PREDICATE.greaterThan(User_.number, 2000));
 
 ### or:
 
+    // find users who have projects with tasks whose text contains "some text"
     List<User> result = userRepository
-        .findAll(PREDICATE.isEquals(User_.projects, Project_.tasks, Task_.text, "task text"));
+        .findAll(PREDICATE.like(User_.projects, Project_.tasks, Task_.text, "some text"));
 
 ### and:
 
+    // find users who have a common project with users participating in myProject
     List<User> result = userRepository
-        .findAll(PREDICATE.have(User_.projects, Project_.tasks, task));
+        .findAll(PREDICATE.have(User_.projects, Project_.users, User_.projects, myProject));
 
 ### even:
 
@@ -39,6 +42,6 @@
 
     <dependency>
       <groupId>ru.jpa.utils</groupId>
-      <artifactId>jpa-utils</artifactId>
-      <version>0.0.8</version>
+      <artifactId>short-query</artifactId>
+      <version>0.0.9</version>
     </dependency>
