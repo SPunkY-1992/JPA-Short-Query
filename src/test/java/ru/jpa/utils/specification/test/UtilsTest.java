@@ -1,6 +1,5 @@
 package ru.jpa.utils.specification.test;
 
-
 import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,10 +9,10 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.any;
-import static ru.jpa.utils.specification.SpecificationUtils.neither;
-import static ru.jpa.utils.specification.SpecificationUtils.orderBy;
-import static ru.jpa.utils.specification.SpecificationUtils.search;
+import static ru.jpa.utils.specification.ShortQuery.any;
+import static ru.jpa.utils.specification.ShortQuery.neither;
+import static ru.jpa.utils.specification.ShortQuery.orderBy;
+import static ru.jpa.utils.specification.ShortQuery.search;
 
 import java.util.List;
 import java.util.Set;
@@ -31,8 +30,8 @@ import ru.jpa.utils.specification.repository.ProjectRepository;
 import ru.jpa.utils.specification.repository.TaskRepository;
 import ru.jpa.utils.specification.repository.UserRepository;
 
-@DataJpaTest
 @RunWith(SpringRunner.class)
+@DataJpaTest
 public class UtilsTest {
 
   @Autowired

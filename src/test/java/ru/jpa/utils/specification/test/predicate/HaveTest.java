@@ -8,7 +8,7 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.PREDICATE;
+import static ru.jpa.utils.specification.ShortQuery.PREDICATE;
 
 import java.util.List;
 import java.util.Set;

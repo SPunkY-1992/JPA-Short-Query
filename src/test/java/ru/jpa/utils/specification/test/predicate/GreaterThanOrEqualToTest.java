@@ -10,8 +10,12 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.PREDICATE;
+import static ru.jpa.utils.specification.ShortQuery.PREDICATE;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import org.junit.Before;
@@ -23,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.jpa.utils.specification.entity.Project_;
 import ru.jpa.utils.specification.entity.Task_;
 import ru.jpa.utils.specification.entity.User;
+import ru.jpa.utils.specification.entity.User.Type;
 import ru.jpa.utils.specification.entity.User_;
 import ru.jpa.utils.specification.repository.ProjectRepository;
 import ru.jpa.utils.specification.repository.TaskRepository;
@@ -53,13 +58,113 @@ public class GreaterThanOrEqualToTest {
   }
 
   @Test
-  public void greaterThanOrEqualToTest() {
+  public void greaterThanOrEqualToNumberTest() {
     // given
-    int bound = USER_COUNT / 2;
-    Set<User> expected = users.stream().filter(user -> user.getNumber() >= bound).collect(toSet());
+    int number = users.get(USER_COUNT / 2).getNumber();
+    Set<User> expected = users.stream().filter(user -> user.getNumber() >= number).collect(toSet());
 
     // when
-    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.number, bound));
+    List<User> result = userRepository
+        .findAll(PREDICATE.greaterThanOrEqualTo(User_.number, number));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToTextTest() {
+    // given
+    String text = users.get(USER_COUNT / 2).getText();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getText().compareTo(text) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.text, text));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToTypeTest() {
+    // given
+    Type type = users.get(USER_COUNT / 2).getType();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getType().name().compareTo(type.name()) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.type, type));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToTimeTest() {
+    // given
+    LocalTime time = users.get(USER_COUNT / 2).getTime();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getTime().compareTo(time) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.time, time));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToDateTest() {
+    // given
+    LocalDate date = users.get(USER_COUNT / 2).getDate();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getDate().compareTo(date) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.date, date));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToLocalDateTimeTest() {
+    // given
+    LocalDateTime time = users.get(USER_COUNT / 2).getLocalDateTime();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getLocalDateTime().compareTo(time) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository
+        .findAll(PREDICATE.greaterThanOrEqualTo(User_.localDateTime, time));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void greaterThanOrEqualToZonedDateTimeTest() {
+    // given
+    ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
+    Set<User> expected = users.stream()
+        .filter(
+            user -> user.getZonedDateTime().compareTo(time) >= 0)
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository
+        .findAll(PREDICATE.greaterThanOrEqualTo(User_.zonedDateTime, time));
 
     // then
     assertEquals(expected.size(), result.size());
@@ -117,8 +222,7 @@ public class GreaterThanOrEqualToTest {
     );
 
     // when
-    List<User> result = userRepository
-        .findAll(PREDICATE.greaterThanOrEqualTo(User_.number, null));
+    List<User> result = userRepository.findAll(PREDICATE.greaterThanOrEqualTo(User_.number, null));
 
     // then
     assertEquals(expected.size(), result.size());

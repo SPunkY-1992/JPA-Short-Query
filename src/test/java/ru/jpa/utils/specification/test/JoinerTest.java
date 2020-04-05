@@ -9,7 +9,7 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.distinct;
+import static ru.jpa.utils.specification.ShortQuery.distinct;
 import static ru.jpa.utils.specification.join.Joiner.join;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class JoinerTest {
   }
 
   /**
-   * import static ru.jpa.utils.specification.SpecificationUtils.distinct;
+   * import static ru.jpa.utils.specification.ShortQuery.distinct;
    * import static ru.jpa.utils.specification.join.Joiner.join;
    */
   @Test
@@ -79,7 +79,7 @@ public class JoinerTest {
   }
 
   /**
-   * import static ru.jpa.utils.specification.SpecificationUtils.distinct;
+   * import static ru.jpa.utils.specification.ShortQuery.distinct;
    * import static ru.jpa.utils.specification.join.Joiner.join;
    */
   @Test

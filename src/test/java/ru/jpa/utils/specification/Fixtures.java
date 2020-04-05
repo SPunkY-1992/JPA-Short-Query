@@ -1,14 +1,18 @@
 package ru.jpa.utils.specification;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import ru.jpa.utils.specification.entity.Project;
 import ru.jpa.utils.specification.entity.Task;
 import ru.jpa.utils.specification.entity.User;
+import ru.jpa.utils.specification.entity.User.Type;
 
 public class Fixtures {
 
-  public static final int USER_COUNT = 55;
+  public static final int USER_COUNT = 111;
   public static final int USER_PROJECT_COUNT = 7;
   public static final int PROJECT_COUNT = USER_COUNT + (USER_PROJECT_COUNT - 1);
   public static final int PROJECT_TASK_COUNT = 4;
@@ -60,8 +64,26 @@ public class Fixtures {
 
   public static List<User> users() {
     List<User> users = new ArrayList<>(USER_COUNT);
+    ZonedDateTime zonedDateTime = ZonedDateTime.now();
+
     for (int u = 0; u < USER_COUNT; u++) {
-      users.add(new User(u, "user" + (u % 2 == 0 ? u : SAME_TEXT)));
+      User user = new User();
+      user.setNumber(u);
+      user.setText("user " + (u % 2 == 0 ? u : SAME_TEXT));
+      user.setType(Type.values()[u % Type.values().length]);
+
+      zonedDateTime = zonedDateTime
+          .plusDays(u % 5 == 0 ? 1 : 0)
+          .withZoneSameInstant(u % 4 == 0 ? ZoneIdLoop.get() : ZoneIdLoop.next())
+          .plusSeconds(u % 3 == 0 ? 1 : 0)
+          .plusNanos((u % 2) * 10000);
+
+      user.setTime(zonedDateTime.toLocalTime());
+      user.setDate(zonedDateTime.toLocalDate());
+      user.setLocalDateTime(zonedDateTime.toLocalDateTime());
+      user.setZonedDateTime(zonedDateTime);
+
+      users.add(user);
     }
     return users;
   }
@@ -80,6 +102,25 @@ public class Fixtures {
       tasks.add(new Task(t, SAME_TEXT + "task" + (t % 2 == 0 ? t : SAME_TEXT)));
     }
     return tasks;
+  }
+
+  static class ZoneIdLoop {
+
+    private static Iterator<String> timeZoneIdIterator = ZoneId.getAvailableZoneIds().iterator();
+    private static ZoneId zoneId = next();
+
+    static ZoneId get() {
+      return zoneId;
+    }
+
+    static ZoneId next() {
+      if (!timeZoneIdIterator.hasNext()) {
+        timeZoneIdIterator = ZoneId.getAvailableZoneIds().iterator();
+      }
+      zoneId = ZoneId.of(timeZoneIdIterator.next());
+      return zoneId;
+    }
+
   }
 
 }

@@ -8,8 +8,9 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.PREDICATE;
+import static ru.jpa.utils.specification.ShortQuery.PREDICATE;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -25,13 +26,14 @@ import ru.jpa.utils.specification.entity.Project_;
 import ru.jpa.utils.specification.entity.Task;
 import ru.jpa.utils.specification.entity.Task_;
 import ru.jpa.utils.specification.entity.User;
+import ru.jpa.utils.specification.entity.User.Type;
 import ru.jpa.utils.specification.entity.User_;
 import ru.jpa.utils.specification.repository.ProjectRepository;
 import ru.jpa.utils.specification.repository.TaskRepository;
 import ru.jpa.utils.specification.repository.UserRepository;
 
-@DataJpaTest
 @RunWith(SpringRunner.class)
+@DataJpaTest
 public class InTest {
 
   @Autowired
@@ -55,13 +57,68 @@ public class InTest {
   }
 
   @Test
-  public void inTest() {
+  public void inNumberTest() {
     // given
-    Set<User> expected = users.stream().limit(USER_COUNT / 2).collect(toSet());
+    Set<Integer> numbers = users.stream().limit(USER_COUNT / 2)
+        .map(User::getNumber)
+        .collect(toSet());
+    Set<User> expected = users.stream()
+        .filter(user -> numbers.contains(user.getNumber()))
+        .collect(toSet());
 
     // when
-    List<User> result = userRepository
-        .findAll(PREDICATE.in(User_.id, expected.stream().map(User::getId).collect(toSet())));
+    List<User> result = userRepository.findAll(PREDICATE.in(User_.number, numbers));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void inTextTest() {
+    // given
+    Set<String> texts = users.stream().limit(USER_COUNT / 2).map(User::getText).collect(toSet());
+    Set<User> expected = users.stream()
+        .filter(user -> texts.contains(user.getText()))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.in(User_.text, texts));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void inTimeTest() {
+    // given
+    Set<LocalTime> times = users.stream().limit(USER_COUNT / 2)
+        .map(user -> user.getTime())
+        .collect(toSet());
+
+    Set<User> expected = users.stream()
+        .filter(user -> times.contains(user.getTime()))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.in(User_.time, times));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void inTypeTest() {
+    // given
+    Set<Type> types = users.stream().limit(USER_COUNT / 2).map(User::getType).collect(toSet());
+    Set<User> expected = users.stream()
+        .filter(user -> types.contains(user.getType()))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.in(User_.type, types));
 
     // then
     assertEquals(expected.size(), result.size());

@@ -1,9 +1,15 @@
 package ru.jpa.utils.specification.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,9 +28,8 @@ import lombok.Setter;
 @Setter
 public class User {
 
-  public User(Integer number, String text) {
-    this.text = text;
-    this.number = number;
+  public enum Type {
+    C, D, E, F, G, A, B
   }
 
   @Id
@@ -34,6 +39,17 @@ public class User {
   private Integer number;
 
   private String text;
+
+  @Enumerated(EnumType.STRING)
+  private Type type;
+
+  private LocalTime time;
+
+  private LocalDate date;
+
+  private LocalDateTime localDateTime;
+
+  private ZonedDateTime zonedDateTime;
 
   @ManyToMany(fetch = FetchType.LAZY)
   private List<Project> projects = new ArrayList<>();

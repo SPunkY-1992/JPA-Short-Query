@@ -5,7 +5,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 
-public interface SpecificationUtils {
+public interface ShortQuery {
 
   Predicate PREDICATE = new Predicate() {
   };
@@ -19,11 +19,10 @@ public interface SpecificationUtils {
   }
 
   static <T> Specification<T> distinct(Specification<T> specification) {
-    return (root, cq, cb) ->
-        cq
-            .distinct(true)
-            .where(specification.toPredicate(root, cq, cb))
-            .getRestriction();
+    return (root, cq, cb) -> cq
+        .distinct(true)
+        .where(specification.toPredicate(root, cq, cb))
+        .getRestriction();
   }
 
   /**
@@ -31,13 +30,14 @@ public interface SpecificationUtils {
    */
   static <T, S extends T, A>
   Specification<S> orderBy(SingularAttribute<T, A> attribute, Direction direction) {
-    return direction == null ? any() : (root, cq, cb) -> cq
-        .orderBy(
-            direction == Direction.ASC
+    return direction == null
+        ? any()
+        : (root, cq, cb) -> cq
+            .orderBy(direction == Direction.ASC
                 ? cb.asc(root.get(attribute))
                 : cb.desc(root.get(attribute))
-        )
-        .getRestriction();
+            )
+            .getRestriction();
   }
 
   /**

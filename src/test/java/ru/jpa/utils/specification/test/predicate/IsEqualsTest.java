@@ -8,12 +8,14 @@ import static ru.jpa.utils.specification.Fixtures.projects;
 import static ru.jpa.utils.specification.Fixtures.relations;
 import static ru.jpa.utils.specification.Fixtures.tasks;
 import static ru.jpa.utils.specification.Fixtures.users;
-import static ru.jpa.utils.specification.SpecificationUtils.PREDICATE;
+import static ru.jpa.utils.specification.ShortQuery.PREDICATE;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +27,14 @@ import ru.jpa.utils.specification.entity.Project_;
 import ru.jpa.utils.specification.entity.Task;
 import ru.jpa.utils.specification.entity.Task_;
 import ru.jpa.utils.specification.entity.User;
+import ru.jpa.utils.specification.entity.User.Type;
 import ru.jpa.utils.specification.entity.User_;
 import ru.jpa.utils.specification.repository.ProjectRepository;
 import ru.jpa.utils.specification.repository.TaskRepository;
 import ru.jpa.utils.specification.repository.UserRepository;
 
-@DataJpaTest
 @RunWith(SpringRunner.class)
+@DataJpaTest
 public class IsEqualsTest {
 
   @Autowired
@@ -55,16 +58,111 @@ public class IsEqualsTest {
   }
 
   @Test
-  public void isEqualsTest() {
+  public void isEqualsNumberTest() {
     // given
-    User expected = users.get(USER_COUNT / 2);
+    int number = users.get(USER_COUNT / 2).getNumber();
+    Set<User> expected = users.stream().filter(user -> user.getNumber() == number).collect(toSet());
 
     // when
-    Optional<User> result = userRepository.findOne(PREDICATE.isEquals(User_.id, expected.getId()));
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.number, number));
 
     // then
-    Assert.assertTrue(result.isPresent());
-    Assert.assertEquals(expected, result.get());
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsTextTest() {
+    // given
+    String text = users.get(USER_COUNT / 2).getText();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getText().equals(text))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.text, text));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsTypeTest() {
+    // given
+    Type type = users.get(USER_COUNT / 2).getType();
+    Set<User> expected = users.stream().filter(user -> user.getType() == type).collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.type, type));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsTimeTest() {
+    // given
+    LocalTime time = users.get(USER_COUNT / 2).getTime();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getTime().equals(time))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.time, time));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsDateTest() {
+    // given
+    LocalDate date = users.get(USER_COUNT / 2).getDate();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getDate().equals(date))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.date, date));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsLocalDateTimeTest() {
+    // given
+    LocalDateTime time = users.get(USER_COUNT / 2).getLocalDateTime();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getLocalDateTime().equals(time))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.localDateTime, time));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
+  }
+
+  @Test
+  public void isEqualsZonedDateTimeTest() {
+    // given
+    ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
+    Set<User> expected = users.stream()
+        .filter(user -> user.getZonedDateTime().equals(time))
+        .collect(toSet());
+
+    // when
+    List<User> result = userRepository.findAll(PREDICATE.isEquals(User_.zonedDateTime, time));
+
+    // then
+    assertEquals(expected.size(), result.size());
+    assertTrue(result.containsAll(expected));
   }
 
   @Test
@@ -89,7 +187,9 @@ public class IsEqualsTest {
   @Test
   public void isEqualsWithJoinJoinTest() {
     // given
-    Task task = users.get(USER_COUNT / 4).getProjects().iterator().next().getTasks().iterator().next();
+    Task task = users.get(USER_COUNT / 4)
+        .getProjects().iterator().next().getTasks().iterator().next();
+
     Set<User> expected = users.stream()
         .filter(user -> user.getProjects().stream()
             .anyMatch(project -> project.getTasks().stream()
