@@ -154,7 +154,7 @@ public class IsEqualsTest {
     // given
     ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
     Set<User> expected = users.stream()
-        .filter(user -> user.getZonedDateTime().equals(time))
+        .filter(user -> user.getZonedDateTime().toInstant().equals(time.toInstant()))
         .collect(toSet());
 
     // when

@@ -157,7 +157,7 @@ public class LessThanTest {
     // given
     ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
     Set<User> expected = users.stream()
-        .filter(user -> user.getZonedDateTime().isBefore(time))
+        .filter(user -> user.getZonedDateTime().toInstant().isBefore(time.toInstant()))
         .collect(toSet());
 
     // when

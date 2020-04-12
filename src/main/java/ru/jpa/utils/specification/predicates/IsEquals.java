@@ -4,7 +4,6 @@ import static ru.jpa.utils.specification.ShortQuery.distinct;
 import static ru.jpa.utils.specification.join.Joiner.join;
 import static ru.jpa.utils.specification.predicates.TypeConverter.dateTimeWithMicroseconds;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -29,7 +28,7 @@ public interface IsEquals {
     }
     if (value instanceof ZonedDateTime) {
       return cb.equal(
-          cb.function("TO_TIMESTAMP", Timestamp.class, path, cb.literal("YYYY-MM-DD HH24:MI:SS.FF 6")),
+          cb.function("TO_TIMESTAMP", String.class, path, cb.literal("YYYY-MM-DD HH24:MI:SS.FF 6")),
           dateTimeWithMicroseconds((ZonedDateTime) value)
       );
     }

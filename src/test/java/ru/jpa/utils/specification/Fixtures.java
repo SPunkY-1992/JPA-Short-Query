@@ -41,22 +41,15 @@ public class Fixtures {
 
     // users with projects
     for (int u = 0; u < USER_COUNT; u++) {
-      System.out.print(u + " :");
       for (int u_p = 0; u_p < USER_PROJECT_COUNT; u_p++) {
         users.get(u).addProject(projects.get(u + u_p));
-        System.out.print(" " + (u + u_p));
       }
-      System.out.println();
     }
-    System.out.println();
     // projects with tasks
     for (int p = 0; p < PROJECT_COUNT; p++) {
-      System.out.print(p + " :");
       for (int p_t = 0; p_t < PROJECT_TASK_COUNT; p_t++) {
         projects.get(p).addTask(tasks.get(p * PROJECT_TASK_COUNT + p_t));
-        System.out.print(" " + (p * PROJECT_TASK_COUNT + p_t));
       }
-      System.out.println();
     }
 
     return users;

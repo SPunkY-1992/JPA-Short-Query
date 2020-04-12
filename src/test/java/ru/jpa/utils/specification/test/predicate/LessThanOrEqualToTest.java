@@ -157,7 +157,7 @@ public class LessThanOrEqualToTest {
     // given
     ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
     Set<User> expected = users.stream()
-        .filter(user -> user.getZonedDateTime().compareTo(time) <= 0)
+        .filter(user -> user.getZonedDateTime().toInstant().compareTo(time.toInstant()) <= 0)
         .collect(toSet());
 
     // when

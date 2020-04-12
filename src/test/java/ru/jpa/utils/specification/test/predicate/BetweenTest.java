@@ -172,8 +172,8 @@ public class BetweenTest {
     ZonedDateTime lower = users.get(USER_COUNT / 4).getZonedDateTime();
     ZonedDateTime upper = users.get(USER_COUNT - USER_COUNT / 4).getZonedDateTime();
     Set<User> expected = users.stream()
-        .filter(user -> user.getZonedDateTime().compareTo(lower) >= 0)
-        .filter(user -> user.getZonedDateTime().compareTo(upper) <= 0)
+        .filter(user -> user.getZonedDateTime().toInstant().compareTo(lower.toInstant()) >= 0)
+        .filter(user -> user.getZonedDateTime().toInstant().compareTo(upper.toInstant()) <= 0)
         .collect(toSet());
 
     // when

@@ -159,7 +159,7 @@ public class GreaterThanTest {
     // given
     ZonedDateTime time = users.get(USER_COUNT / 2).getZonedDateTime();
     Set<User> expected = users.stream()
-        .filter(user -> user.getZonedDateTime().isAfter(time))
+        .filter(user -> user.getZonedDateTime().toInstant().isAfter(time.toInstant()))
         .collect(toSet());
 
     // when
